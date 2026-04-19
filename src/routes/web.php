@@ -23,6 +23,16 @@ use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
+    Route::post('/attendance/start', [AttendanceController::class, 'start'])->name('attendance.start');
+    Route::post('/attendance/break/start', [AttendanceController::class, 'breakStart'])->name('attendance.break.start');
+    Route::post('/attendance/break/end', [AttendanceController::class, 'breakEnd'])->name('attendance.break.end');
+    Route::post('/attendance/end', [AttendanceController::class, 'end'])->name('attendance.end');
+
+    Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
+    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
+
+    Route::post('/stamp_correction_request', [StampCorrectionRequestController::class, 'store'])->name('stamp_correction_request.store');
+    Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -33,7 +43,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('auth:admin')->group(function () {
         Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');
+
+        Route::get('/staff/list', [StaffController::class, 'index'])->name('staff.list');
+
+        Route::get('/attendance/staff/{user}', [StaffAttendanceController::class, 'index'])->name('attendance.staff');
         
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.list');
+        Route::get('/attendance/{user}/{date}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
+        Route::post('/attendance/{user}/{date}', [AdminAttendanceController::class, 'update'])->name('attendance.update');
+
+        Route::get('/stamp_correction_request/list', [AdminStampCorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
+        Route::get('/stamp_correction_request/approve/{correctionRequest}', [AdminStampCorrectionRequestController::class, 'show'])->name('stamp_correction_request.approve');
+        Route::post('/stamp_correction_request/approve/{correctionRequest}', [AdminStampCorrectionRequestController::class, 'approve'])->name('stamp_correction_request.approve.update');
     });
 });

@@ -1,0 +1,17 @@
+.attendance-list__actions--admin {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.attendance-list__csv-button {
+    min-width: 180px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background: #000;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}

@@ -1,0 +1,81 @@
+.request-list {
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px 60px;
+}
+
+.request-list__inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.request-list__title {
+    border-left: 7px solid #000;
+    font-size: 30px;
+    font-weight: 700;
+    padding-left: 18px;
+    margin: 40px auto;
+}
+
+.request-list__tabs {
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 24px;
+    padding-left: 16px;
+}
+
+.request-list__tab {
+    display: inline-block;
+    padding: 0 0 12px;
+    color: #000;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.request-list__tab.is-active {
+    font-weight: bold;
+}
+
+.request-list__table-wrap {
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.request-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.request-list__table th,
+.request-list__table td {
+    padding: 18px 16px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+    font-size: 15px;
+}
+
+.request-list__table th {
+    font-weight: bold;
+    background: #fff;
+}
+
+.request-list__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.request-list__table td:last-child,
+.request-list__table th:last-child {
+    text-align: right;
+}
+
+.request-list__table a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.request-list__table a:hover {
+    text-decoration: underline;
+}

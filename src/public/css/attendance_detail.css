@@ -1,0 +1,145 @@
+.attendance-detail {
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px 60px;
+}
+
+.attendance-detail__inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.attendance-detail__title {
+    border-left: 7px solid #000;
+    font-size: 30px;
+    font-weight: 700;
+    padding-left: 18px;
+    margin: 40px auto;
+}
+
+.attendance-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.attendance-detail-table th,
+.attendance-detail-table td {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 24px 28px;
+    font-size: 16px;
+    vertical-align: middle;
+    background: #fff;
+}
+
+.attendance-detail-table tr:last-child th,
+.attendance-detail-table tr:last-child td {
+    border-bottom: none;
+}
+
+.attendance-detail-table th {
+    width: 220px;
+    color: #737373;
+    text-align: left;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.attendance-detail-table td {
+    text-align: left;
+    font-weight: bold;
+}
+
+.attendance-detail-table input[type="time"] {
+    width: 120px;
+    height: 42px;
+    padding: 0 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.attendance-detail-table input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.attendance-detail-table textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.attendance-detail-table__separator {
+    display: inline-block;
+    margin: 0 14px;
+}
+
+.attendance-detail__actions {
+    text-align: right;
+    margin-top: 32px;
+}
+
+.attendance-detail__button {
+    min-width: 130px;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 4px;
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.attendance-detail__locked {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(255, 0, 0, 0.5);;
+}
+
+.error {
+    margin-top: 8px;
+    color: #ff0000;
+    font-size: 14px;
+}
+
+.attendance-detail__message-error {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.attendance-detail__button-wrapper {
+    margin-top: 40px;
+    text-align: right;
+}
+
+.attendance-detail__button {
+    width: 130px;
+    height: 50px;
+    border: none;
+    border-radius: 6px;
+    background: #000;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.attendance-detail__button--approved {
+    background: #d9d9d9;
+    color: #fff;
+    cursor: not-allowed;
+}
