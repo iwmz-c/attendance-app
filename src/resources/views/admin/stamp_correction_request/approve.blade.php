@@ -54,7 +54,7 @@
         </table>
 
         @if($correctionRequest->status === 'pending')
-            <form method="POST" action="{{ route('admin.stamp_correction_request.approve.update', ['correctionRequest' => $correctionRequest->id]) }}">
+            <form method="POST" action="{{ route('admin.stamp_correction_request.approve.update', ['correctionRequest' => $correctionRequest->id]) }}" novalidate>
                 @csrf
                 <div class="attendance-detail__button-wrapper">
                     <button type="submit" class="attendance-detail__button">

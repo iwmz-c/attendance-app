@@ -139,8 +139,8 @@
 }
 
 .attendance-detail__button--approved {
-    background: #d9d9d9;
+    background: #696969;
     color: #fff;
     cursor: not-allowed;
-    padding: 10px auto;
+    padding: 10px;
 }

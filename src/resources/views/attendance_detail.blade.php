@@ -14,7 +14,7 @@
     <div class="attendance-detail__inner">
         <h1 class="attendance-detail__title">勤怠詳細</h1>
 
-        <form method="POST" action="{{ route('stamp_correction_request.store') }}">
+        <form method="POST" action="{{ route('stamp_correction_request.store') }}" novalidate>
         @csrf
 
         <input type="hidden" name="work_date" value="{{ $day->toDateString() }}">
