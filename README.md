@@ -23,6 +23,7 @@
 - Laravel Fortify
 
 ## ER図
+<img src="/src/public/img/attendance_ER.png" width="800">
 
 ## ログイン情報
 ### 一般ユーザー
