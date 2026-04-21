@@ -5,10 +5,11 @@
 }
 
 .admin-attendance-list__title {
-    text-align: center;
+    border-left: 7px solid #000;
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 40px;
+    padding-left: 18px;
+    margin: 40px auto;
 }
 
 .admin-attendance-list__date-nav {

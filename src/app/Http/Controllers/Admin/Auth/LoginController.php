@@ -14,7 +14,6 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        // 要件に合わせてバリデーション（未入力メッセージ）
         $credentials = $request->validate(
             [
                 'email' => ['required', 'email'],
@@ -26,15 +25,12 @@ class LoginController extends Controller
             ]
         );
 
-        // ★ここが重要：admin guardで認証する
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 管理者トップへ（ひとまず勤怠一覧とか）
             return redirect()->route('admin.attendance.list'); 
         }
 
-        // 誤りメッセージ（要件文言）
         return back()->withErrors([
             'email' => 'ログイン情報が登録されていません',
         ])->onlyInput('email');

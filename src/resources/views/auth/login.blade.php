@@ -1,14 +1,11 @@
 @extends('layouts.default')
 
-<!-- タイトル -->
 @section('title','ログイン')
 
-<!-- css読み込み -->
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/authentication.css')  }}">
 @endsection
 
-<!-- 本体 -->
 @section('content')
 
 @include('components.header')

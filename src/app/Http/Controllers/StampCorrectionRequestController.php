@@ -13,14 +13,14 @@ class StampCorrectionRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $tab = $request->query('tab', 'pending'); // デフォは承認待ち
+        $tab = $request->query('tab', 'pending');
         $status = $tab === 'approved' ? 'approved' : 'pending';
 
         $requests = CorrectionRequest::where('user_id', auth()->id())
             ->where('status', $status)
             ->orderByDesc('created_at')
             ->paginate(10)
-            ->withQueryString(); // tab をページ移動でも保持
+            ->withQueryString();
 
         return view('stamp_correction_request.list', compact('requests', 'tab'));
     }
@@ -49,14 +49,12 @@ class StampCorrectionRequestController extends Controller
                 ->first();
         }
 
-        // 無いなら、その日付で探す（打刻漏れ＝attendance無しに対応）
         if (!$attendance) {
             $attendance = Attendance::where('user_id', auth()->id())
                 ->whereDate('work_date', $workDate)
                 ->first();
         }
 
-        // breaks整形（start/end両方あるものだけ）
         $breakRows = collect($validated['breaks'] ?? [])
             ->filter(fn($b) => !empty($b['start']) && !empty($b['end']))
             ->map(fn($b) => [
@@ -88,7 +86,6 @@ class StampCorrectionRequestController extends Controller
             }
         });
 
-        // ✅ 詳細へ戻す（idが無い日は0＋date）
         $id = $attendance?->id ?? 0;
 
         return redirect()

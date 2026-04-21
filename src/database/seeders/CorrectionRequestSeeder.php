@@ -20,7 +20,6 @@ class CorrectionRequestSeeder extends Seeder
 
         foreach ($attendances as $attendance) {
 
-            // 承認待ち
             CorrectionRequest::create([
                 'user_id' => $attendance->user_id,
                 'attendance_id' => $attendance->id,
@@ -33,7 +32,6 @@ class CorrectionRequestSeeder extends Seeder
                 'status' => 'pending',
             ]);
 
-            // 承認済み
             CorrectionRequest::create([
                 'user_id' => $attendance->user_id,
                 'attendance_id' => $attendance->id,
@@ -45,7 +43,7 @@ class CorrectionRequestSeeder extends Seeder
 
                 'status' => 'approved',
                 'approved_at' => now(),
-                'approved_by' => 1, // 管理者ID
+                'approved_by' => 1,
             ]);
         }
     }

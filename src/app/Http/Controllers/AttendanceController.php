@@ -13,25 +13,21 @@ class AttendanceController extends Controller
 {
     public function index(Request $request) 
     {
-        // ?month=2026-02 みたいに受け取る（無ければ今月）
         $month = $request->input('month', now()->format('Y-m'));
         $start = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
         $end   = $start->copy()->endOfMonth();
 
-        // その月の日付リスト（1日〜末日）
         $days = collect();
         for ($d = $start->copy(); $d->lte($end); $d->addDay()) {
             $days->push($d->copy());
         }
 
-        // 勤怠をまとめて取得（work_date で引けるように）
-        $attendances = Attendance::with('breakTimes') // 休憩合計を出すなら
+        $attendances = Attendance::with('breakTimes')
             ->where('user_id', auth()->id())
             ->whereBetween('work_date', [$start->toDateString(), $end->toDateString()])
             ->get()
             ->keyBy(fn($a) => Carbon::parse($a->work_date)->toDateString());
 
-        // 前月・翌月用
         $prevMonth = $start->copy()->subMonth()->format('Y-m');
         $nextMonth = $start->copy()->addMonth()->format('Y-m');
     
@@ -66,7 +62,7 @@ class AttendanceController extends Controller
     public function detail($id, Request $request)
     {
         if ((int)$id === 0) {
-            $date = $request->query('date'); // 必須
+            $date = $request->query('date');
             $day = \Carbon\Carbon::createFromFormat('Y-m-d', $date);
 
             $attendance = null;
@@ -75,7 +71,7 @@ class AttendanceController extends Controller
                 ->where('user_id', auth()->id())
                 ->findOrFail($id);
 
-            $day = $attendance->work_date; // castsでCarbon
+            $day = $attendance->work_date;
         }
 
         $pendingRequest = CorrectionRequest::where('user_id', auth()->id())
@@ -128,12 +124,10 @@ class AttendanceController extends Controller
             ->whereDate('work_date', today())
             ->first();
 
-        // 出勤してない / 退勤済み なら何もしない
         if (!$attendance || $attendance->clock_out_at) {
             return redirect()->route('attendance.create');
         }
 
-        // すでに休憩中なら二重作成しない
         $onBreak = $attendance->breakTimes()
             ->whereNull('break_end_at')
             ->exists();
@@ -165,7 +159,6 @@ class AttendanceController extends Controller
             ->latest('break_start_at')
             ->first();
 
-        // 休憩中じゃなければ何もしない
         if (!$break) {
             return redirect()->route('attendance.create');
         }

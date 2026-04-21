@@ -29,14 +29,11 @@ class AdminAttendanceUpdateRequest extends FormRequest
             'work_date' => ['required', 'date'],
             'attendance_id' => ['nullable', 'integer'],
 
-            // 時刻はフォームが空でも送れるよう nullable
             'requested_clock_in_at' => ['nullable', 'date_format:H:i'],
             'requested_clock_out_at' => ['nullable', 'date_format:H:i'],
 
-            // 要件④
             'requested_note' => ['required', 'string'],
 
-            // breaks[0][start], breaks[0][end]... を受ける
             'breaks' => ['nullable', 'array'],
             'breaks.*.start' => ['nullable', 'date_format:H:i'],
             'breaks.*.end' => ['nullable', 'date_format:H:i'],
@@ -46,7 +43,6 @@ class AdminAttendanceUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // 要件④
             'requested_note.required' => '備考を記入してください',
         ];
     }
@@ -57,7 +53,6 @@ class AdminAttendanceUpdateRequest extends FormRequest
             $workDate = $this->input('work_date');
             if (!$workDate) return;
 
-            // work_date + 時刻 を datetime に変換するヘルパ
             $toDateTime = function (?string $time) use ($workDate): ?Carbon {
                 if (!$time) return null;
                 return Carbon::createFromFormat('Y-m-d H:i', $workDate . ' ' . $time);
@@ -66,7 +61,6 @@ class AdminAttendanceUpdateRequest extends FormRequest
             $in  = $toDateTime($this->input('requested_clock_in_at'));
             $out = $toDateTime($this->input('requested_clock_out_at'));
 
-            // ① 出勤 > 退勤（または 退勤 < 出勤）
             if ($in && $out && $in->gte($out)) {
                 $validator->errors()->add(
                     'requested_clock_in_at',
@@ -81,21 +75,17 @@ class AdminAttendanceUpdateRequest extends FormRequest
                 $start = $toDateTime($b['start'] ?? null);
                 $end   = $toDateTime($b['end'] ?? null);
 
-                // 両方空ならスキップ
                 if (!$start && !$end) continue;
 
-                // 片方だけ入力（要件には無いけど、ここは不適切として同じメッセージに寄せる）
                 if (!$start || !$end) {
                     $validator->errors()->add("breaks.$i.start", '休憩時間が不適切な値です');
                     continue;
                 }
 
-                // 休憩開始 > 休憩終了（これも不適切として同じメッセージ）
                 if ($end->lte($start)) {
                     $validator->errors()->add("breaks.$i.start", '休憩時間が不適切な値です');
                 }
 
-                // ② 休憩開始が出勤より前 / 退勤より後
                 if ($in && $start->lt($in)) {
                     $validator->errors()->add("breaks.$i.start", '休憩時間が不適切な値です');
                 }
@@ -103,7 +93,6 @@ class AdminAttendanceUpdateRequest extends FormRequest
                     $validator->errors()->add("breaks.$i.start", '休憩時間が不適切な値です');
                 }
 
-                // ③ 休憩終了が退勤より後
                 if ($out && $end->gt($out)) {
                     $validator->errors()->add(
                         "breaks.$i.end",

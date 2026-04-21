@@ -25,17 +25,14 @@ class AttendanceSeeder extends Seeder
         foreach ($users as $user) {
 
             for ($date = $start->copy(); $date <= $end; $date->addDay()) {
-                // 週末はスキップ（休日扱い）
                 if ($date->isWeekend()) {
                     continue;
                 }
 
-                // たまに休み（ランダム）
                 if (rand(1, 5) === 1) {
                     continue;
                 }
 
-                // 勤怠作成
                 $attendance = Attendance::create([
                     'user_id' => $user->id,
                     'work_date' => $date->toDateString(),
@@ -43,7 +40,6 @@ class AttendanceSeeder extends Seeder
                     'clock_out_at' => $date->copy()->setTime(18, 0),
                 ]);
 
-                // 休憩
                 BreakTime::create([
                     'attendance_id' => $attendance->id,
                     'break_start_at' => $date->copy()->setTime(12, 0),
