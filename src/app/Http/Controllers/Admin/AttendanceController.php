@@ -31,21 +31,33 @@ class AttendanceController extends Controller
     public function show(User $user, string $date) {
         $day = Carbon::parse($date);
 
-        $attendance = Attendance::with('breakTimes')
+        $attendance = Attendance::with(['breakTimes', 'correctionRequests'])
             ->where('user_id', $user->id)
             ->whereDate('work_date', $day->toDateString())
             ->first();
+        
+        $isPending = $attendance
+            ? $attendance->correctionRequests()->where('status', 'pending')->exists()
+            : false;
 
-        return view('admin.attendance_detail', compact('user', 'day', 'attendance'));
+        return view('admin.attendance_detail', compact('user', 'day', 'attendance', 'isPending'));
     }
 
     public function update(AdminAttendanceUpdateRequest $request, User $user, string $date) {
         $day = Carbon::parse($date);
 
-        $attendance = Attendance::firstOrNew([
+        $attendance = Attendance::with('correctionRequests')->firstOrNew([
             'user_id' => $user->id,
             'work_date' => $day->toDateString(),
         ]);
+
+        if ($attendance->exists && $attendance->correctionRequests()->where('status', 'pending')->exists()) {
+            return redirect()->route('admin.attendance.show', [
+                'user' => $user->id,
+                'date' => $day->toDateString(),
+            ])
+            ->withErrors(['message' => '承認待ちのため修正はできません。',]);
+        }
 
         $attendance->clock_in_at = $request->requested_clock_in_at
             ? $day->copy()->setTimeFromTimeString($request->requested_clock_in_at)

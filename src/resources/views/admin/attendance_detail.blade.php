@@ -37,11 +37,11 @@
                     <td>
                         <input type="time"
                             name="requested_clock_in_at"
-                            value="{{ old('requested_clock_in_at', $attendance?->clock_in_at?->format('H:i')) }}">
+                            value="{{ old('requested_clock_in_at', $attendance?->clock_in_at?->format('H:i')) }}" {{ $isPending ? 'readonly' : '' }}>
                         <span class="attendance-detail-table__separator">〜</span>
                         <input type="time"
                             name="requested_clock_out_at"
-                            value="{{ old('requested_clock_out_at', $attendance?->clock_out_at?->format('H:i')) }}">
+                            value="{{ old('requested_clock_out_at', $attendance?->clock_out_at?->format('H:i')) }}" {{ $isPending ? 'readonly' : '' }}>
                         @error('requested_clock_in_at')
                             <p class="error">{{ $message }}</p>
                         @enderror
@@ -70,11 +70,11 @@
                         <td>
                             <input type="time"
                                 name="breaks[{{ $i }}][start]"
-                                value="{{ old($startKey, $b?->break_start_at?->format('H:i')) }}">
+                                value="{{ old($startKey, $b?->break_start_at?->format('H:i')) }}" {{ $isPending ? 'readonly' : '' }}>
                             <span class="attendance-detail-table__separator">〜</span>
                             <input type="time"
                                 name="breaks[{{ $i }}][end]"
-                                value="{{ old($endKey, $b?->break_end_at?->format('H:i')) }}">
+                                value="{{ old($endKey, $b?->break_end_at?->format('H:i')) }}" {{ $isPending ? 'readonly' : '' }}>
 
                             @error("breaks.$i.start")
                                 <p class="error">{{ $message }}</p>
@@ -89,7 +89,7 @@
                 <tr>
                     <th>備考</th>
                     <td>
-                        <textarea name="requested_note">{{ old('requested_note', $attendance?->note) }}</textarea>
+                        <textarea name="requested_note" {{ $isPending ? 'readonly' : '' }}>{{ old('requested_note', $attendance?->note) }}</textarea>
                         @error('requested_note')
                             <p class="error">{{ $message }}</p>
                         @enderror
@@ -99,7 +99,11 @@
         </table>
 
         <div class="attendance-detail__actions">
-            <button type="submit" class="attendance-detail__button">修正</button>
+            @if($isPending)
+                <p class="attendance-detail__locked">承認待ちのため修正はできません。</p>
+            @else
+                <button type="submit" class="attendance-detail__button">修正</button>
+            @endif
         </div>
 
         @error('message')
